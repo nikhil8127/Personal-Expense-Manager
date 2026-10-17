@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Expense Manager</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/login.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="background-circle circle-one"></div>
+    <div class="background-circle circle-two"></div>
+    <div class="background-circle circle-three"></div>
+
+    <div class="login-container">
+
+        <div class="login-left">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+
+            <h1>Expense Manager</h1>
+
+            <p class="welcome-text">
+                Manage your money smarter.
+            </p>
+
+            <div class="feature-list">
+
+                <div class="feature">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Track your expenses</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Manage your income</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Analyze your spending</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-piggy-bank"></i>
+                    <span>Build your savings</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="login-right">
+
+            <div class="login-header">
+
+                <div class="mobile-logo">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+
+                <h2>Welcome Back</h2>
+
+                <p>
+                    Login to continue to your account
+                </p>
+
+            </div>
+
+
+            {% if error %}
+
+            <div class="error-message">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                <span>{{ error }}</span>
+
+            </div>
+
+            {% endif %}
+
+
+            {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                    {% for message in messages %}
+
+                    <div class="flash-message">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span>{{ message }}</span>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <form method="POST"
+                  action="{{ url_for('login') }}"
+                  class="login-form">
+
+                <div class="input-group">
+
+                    <label for="email">
+                        <i class="fa-solid fa-envelope"></i>
+                        Email
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                            autocomplete="email"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="password">
+                        <i class="fa-solid fa-lock"></i>
+                        Password
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-key"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="passwordToggle">
+
+                            <i class="fa-solid fa-eye"
+                               id="passwordIcon"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-options">
+
+    <label class="remember-me">
+
+        <input
+            type="checkbox"
+            name="remember">
+
+        <span>Remember me</span>
+
+    </label>
+
+    <a href="#" id="forgotPassword">
+        Forgot Password?
+    </a>
+
+</div>
+
+
+                <button type="submit"
+                        class="login-button">
+
+                    <span>Login</span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+
+            <div class="register-section">
+
+                <p>
+                    Don't have an account?
+                </p>
+
+                <a href="{{ url_for('register') }}"
+                   class="register-button">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Create Account
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        Secure Personal Expense Management
+
+    </div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+</body>
+
+</html>
+

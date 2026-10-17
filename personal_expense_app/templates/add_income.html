@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Income - Expense Manager</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Unified Modern Theme & Income CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_income.css') }}">
+</head>
+
+<body>
+
+<!-- Floating Navigation Toggle (Visible when sidebar is hidden) -->
+<button class="floating-nav-toggle" id="floatingNavToggle" aria-label="Open Navigation Menu" title="Open Sidebar (Ctrl+B)">
+    <i class="fa-solid fa-bars"></i>
+    <span>Menu</span>
+</button>
+
+<!-- Navigation Sidebar -->
+<nav class="income-nav">
+
+    <div class="sidebar-header-row">
+        <h2>Expense Manager</h2>
+        <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Hide Sidebar (Ctrl+B)">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}">
+        <i class="fa-solid fa-house"></i>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="{{ url_for('add_expense') }}">
+        <i class="fa-solid fa-arrow-down"></i>
+        <span>Add Expense</span>
+    </a>
+
+    <a href="{{ url_for('add_income') }}" class="active">
+        <i class="fa-solid fa-arrow-up"></i>
+        <span>Add Income</span>
+    </a>
+
+    <a href="{{ url_for('transactions') }}">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Transactions</span>
+    </a>
+
+    <a href="{{ url_for('budget') }}">
+        <i class="fa-solid fa-wallet"></i>
+        <span>Budget</span>
+    </a>
+
+    <a href="{{ url_for('savings') }}">
+        <i class="fa-solid fa-piggy-bank"></i>
+        <span>Savings</span>
+    </a>
+
+    <a href="{{ url_for('analytics') }}">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Analytics</span>
+    </a>
+
+    <a href="{{ url_for('reports') }}">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Reports</span>
+    </a>
+
+    <a href="{{ url_for('logout') }}">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </a>
+
+</nav>
+
+
+<!-- Main Container -->
+<main class="income-main">
+
+    <!-- Heading -->
+    <section class="income-heading">
+        <div>
+            <span class="heading-pill">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                NEW INFLOW
+            </span>
+            <h1>Add Income</h1>
+            <p>Log incoming funds, salary, investments, and gifts to your ledger.</p>
+        </div>
+
+        <div class="income-heading-icon">
+            <i class="fa-solid fa-arrow-trend-up"></i>
+        </div>
+    </section>
+
+
+    <!-- Form Layout -->
+    <section class="income-layout">
+
+        <!-- Left Info Card -->
+        <div class="income-info">
+            <div class="info-badge">
+                <i class="fa-solid fa-sack-dollar"></i>
+                <span>Wealth Building</span>
+            </div>
+
+            <h2>Grow Your Net Worth</h2>
+            <p>
+                Tracking every stream of revenue gives you a comprehensive picture of your financial independence and savings capacity.
+            </p>
+
+            <div class="income-feature">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <section>
+                    <h3>Multiple Inflow Channels</h3>
+                    <p>Track primary salary, freelance gigs, and dividend payouts.</p>
+                </section>
+            </div>
+
+            <div class="income-feature">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-piggy-bank"></i>
+                </div>
+                <section>
+                    <h3>Empower Savings Goals</h3>
+                    <p>Allocate positive cash flow directly to your savings targets.</p>
+                </section>
+            </div>
+
+            <div class="income-feature">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <section>
+                    <h3>Safe & Confidential</h3>
+                    <p>All earnings information is encrypted and strictly private.</p>
+                </section>
+            </div>
+        </div>
+
+
+        <!-- Right Form Card -->
+        <div class="income-form-card">
+
+            <div class="form-title">
+                <div class="form-title-icon">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <h2>Income Details</h2>
+                    <p>Enter the details of this incoming transaction</p>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('add_income') }}" id="incomeForm">
+
+                <!-- Date -->
+                <div class="form-group">
+                    <label for="date">
+                        <i class="fa-regular fa-calendar"></i>
+                        Date of Credit
+                    </label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                </div>
+
+                <!-- Amount -->
+                <div class="form-group">
+                    <label for="amount">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                        Income Amount (INR)
+                    </label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            placeholder="0.00"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+                    <!-- Quick Amount Chips -->
+                    <div class="quick-amount-chips">
+                        <span class="chip-label">Quick:</span>
+                        <button type="button" class="amount-chip" data-amount="1000">+₹1,000</button>
+                        <button type="button" class="amount-chip" data-amount="5000">+₹5,000</button>
+                        <button type="button" class="amount-chip" data-amount="10000">+₹10,000</button>
+                        <button type="button" class="amount-chip" data-amount="25000">+₹25,000</button>
+                    </div>
+
+                    <div class="amount-preview" id="amountPreview">
+                        ₹0.00
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category">
+                        <i class="fa-solid fa-tags"></i>
+                        Income Source
+                    </label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-list"></i>
+                        <select id="category" name="category" required>
+                            <option value="">Select Income Source</option>
+                            <option value="Salary">💼 Salary / Wages</option>
+                            <option value="Freelance">💻 Freelance / Contract</option>
+                            <option value="Business">🏢 Business Revenue</option>
+                            <option value="Investments">📈 Investments & Dividends</option>
+                            <option value="Rental">🏠 Rental Income</option>
+                            <option value="Gift">🎁 Gift / Bonus</option>
+                            <option value="Other">✨ Other Inflow</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Payment Mode -->
+                <div class="form-group">
+                    <label for="payment_mode">
+                        <i class="fa-solid fa-credit-card"></i>
+                        Received Via
+                    </label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-wallet"></i>
+                        <select id="payment_mode" name="payment_mode" required>
+                            <option value="">Select Deposit Method</option>
+                            <option value="Bank Transfer">🏦 Direct Bank Transfer (NEFT/IMPS)</option>
+                            <option value="UPI">📱 UPI (Google Pay, PhonePe, Paytm)</option>
+                            <option value="Cash">💵 Cash</option>
+                            <option value="Cheque">📜 Cheque</option>
+                            <option value="Debit Card">💳 Debit Card</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">
+                        <i class="fa-solid fa-align-left"></i>
+                        Description / Note (Optional)
+                    </label>
+                    <div class="input-box textarea-box">
+                        <i class="fa-solid fa-pen"></i>
+                        <textarea
+                            id="description"
+                            name="description"
+                            placeholder="e.g. Monthly salary, project milestone payment, bonus..."
+                            rows="3"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="income-submit">
+                    <span>
+                        <i class="fa-solid fa-plus"></i>
+                        Confirm & Record Income
+                    </span>
+                    <i class="fa-solid fa-arrow-right button-arrow"></i>
+                </button>
+
+                <div class="form-security">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Your financial records are strictly private and encrypted.</span>
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+<script src="{{ url_for('static', filename='js/add_income.js') }}"></script>
+
+</body>
+</html>

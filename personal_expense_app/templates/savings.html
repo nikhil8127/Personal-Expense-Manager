@@ -1,0 +1,871 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Savings - Expense Manager</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/savings.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- Floating Navigation Toggle (Visible when sidebar is hidden) -->
+<button class="floating-nav-toggle" id="floatingNavToggle" aria-label="Open Navigation Menu" title="Open Sidebar (Ctrl+B)">
+    <i class="fa-solid fa-bars"></i>
+    <span>Menu</span>
+</button>
+
+<!-- Navigation Sidebar -->
+<nav class="savings-nav">
+
+    <div class="sidebar-header-row">
+        <h2>Expense Manager</h2>
+        <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Hide Sidebar (Ctrl+B)">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}">
+        <i class="fa-solid fa-house"></i>
+        Dashboard
+    </a>
+
+    <a href="{{ url_for('add_expense') }}">
+        <i class="fa-solid fa-arrow-down"></i>
+        Add Expense
+    </a>
+
+    <a href="{{ url_for('add_income') }}">
+        <i class="fa-solid fa-arrow-up"></i>
+        Add Income
+    </a>
+
+    <a href="{{ url_for('transactions') }}">
+        <i class="fa-solid fa-receipt"></i>
+        Transactions
+    </a>
+
+    <a href="{{ url_for('budget') }}">
+        <i class="fa-solid fa-wallet"></i>
+        Budget
+    </a>
+
+    <a href="{{ url_for('savings') }}" class="active">
+        <i class="fa-solid fa-piggy-bank"></i>
+        Savings
+    </a>
+
+    <a href="{{ url_for('analytics') }}">
+        <i class="fa-solid fa-chart-line"></i>
+        Analytics
+    </a>
+
+    <a href="{{ url_for('reports') }}">
+        <i class="fa-solid fa-file-lines"></i>
+        Reports
+    </a>
+
+    <a href="{{ url_for('logout') }}">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+    </a>
+
+</nav>
+
+
+<main class="savings-main">
+
+    <section class="page-header">
+
+        <div>
+
+            <span class="page-label">
+                <i class="fa-solid fa-piggy-bank"></i>
+                SAVINGS MANAGEMENT
+            </span>
+
+            <h1>My Savings</h1>
+
+            <p>
+                Set goals and track your savings progress.
+            </p>
+
+        </div>
+
+        <div class="header-icon">
+            <i class="fa-solid fa-bullseye"></i>
+        </div>
+
+    </section>
+
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="fa-solid fa-bullseye"></i>
+            </div>
+
+            <div>
+
+                <span>Total Target</span>
+
+                <h2>
+                    ₹{{ "%.2f"|format(total_target) }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon saved-icon">
+                <i class="fa-solid fa-piggy-bank"></i>
+            </div>
+
+            <div>
+
+                <span>Total Saved</span>
+
+                <h2>
+                    ₹{{ "%.2f"|format(total_savings) }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon remaining-icon">
+                <i class="fa-solid fa-flag"></i>
+            </div>
+
+            <div>
+
+                <span>Remaining</span>
+
+                <h2>
+                    ₹{{ "%.2f"|format(total_remaining) }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+
+            <div>
+
+                <span>Overall Progress</span>
+
+                <h2>
+                    {{ "%.1f"|format(savings_percentage) }}%
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="add-goal-section">
+
+        <div class="section-heading">
+
+            <span>
+                <i class="fa-solid fa-plus"></i>
+                CREATE SAVINGS GOAL
+            </span>
+
+            <h2>New Goal</h2>
+
+        </div>
+
+
+        <form
+            action="{{ url_for('savings') }}"
+            method="POST"
+            class="goal-form">
+
+            <div class="form-group">
+
+                <label for="goal_name">
+                    Goal Name
+                </label>
+
+                <input
+                    type="text"
+                    id="goal_name"
+                    name="goal_name"
+                    placeholder="Example: New Laptop"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="target_amount">
+                    Target Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="target_amount"
+                    name="target_amount"
+                    placeholder="Enter target amount"
+                    min="1"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="deadline">
+                    Deadline
+                </label>
+
+                <input
+                    type="date"
+                    id="deadline"
+                    name="deadline"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="monthly_target">
+                    Monthly Saving Target
+                </label>
+
+                <input
+                    type="number"
+                    id="monthly_target"
+                    name="monthly_target"
+                    placeholder="Example: 5000"
+                    min="0"
+                    step="0.01"
+                >
+
+            </div>
+
+
+            <button type="submit">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Create Goal
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <section class="goals-section">
+
+        <div class="section-heading">
+
+            <span>
+                <i class="fa-solid fa-chart-line"></i>
+                SAVINGS PROGRESS
+            </span>
+
+            <h2>Your Goals</h2>
+
+        </div>
+
+
+        {% if goals %}
+
+        <div class="goals-grid">
+
+            {% for goal in goals %}
+
+            <div class="goal-card {{ goal['status'] }}">
+
+
+                <div class="goal-header">
+
+                    <div class="goal-icon">
+
+                        {% if goal["status"] == "completed" %}
+
+                            <i class="fa-solid fa-trophy"></i>
+
+                        {% elif goal["status"] == "near" %}
+
+                            <i class="fa-solid fa-fire"></i>
+
+                        {% else %}
+
+                            <i class="fa-solid fa-bullseye"></i>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="goal-title">
+
+                        <h3>
+                            {{ goal["goal_name"] }}
+                        </h3>
+
+                        <span>
+                            Target:
+                            ₹{{ "%.2f"|format(goal["target_amount"]) }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="goal-menu">
+
+                        <button
+                            type="button"
+                            class="edit-goal-btn"
+                            title="Edit Goal"
+                            onclick="openEditGoal(
+                                '{{ goal["goal_id"] }}',
+                                '{{ goal["goal_name"]|e }}',
+                                '{{ goal["target_amount"] }}',
+                                '{{ goal["deadline"] or "" }}',
+                                '{{ goal["monthly_target"] }}'
+                            )">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </button>
+
+
+                        <form
+                            action="{{ url_for('delete_savings', goal_id=goal['goal_id']) }}"
+                            method="POST"
+                            onsubmit="return confirm('Delete this savings goal?');">
+
+                            <button
+                                type="submit"
+                                title="Delete Goal">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                <div class="goal-amounts">
+
+                    <div>
+
+                        <span>Saved</span>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(goal["current_amount"]) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Remaining</span>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(goal["remaining"]) }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="progress-header">
+
+                    <span>
+                        {{ "%.1f"|format(goal["percentage"]) }}%
+                    </span>
+
+
+                    {% if goal["status"] == "completed" %}
+
+                    <span class="status completed-status">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Completed
+
+                    </span>
+
+                    {% elif goal["status"] == "near" %}
+
+                    <span class="status near-status">
+
+                        <i class="fa-solid fa-fire"></i>
+
+                        Almost There
+
+                    </span>
+
+                    {% else %}
+
+                    <span class="status active-status">
+
+                        <i class="fa-solid fa-spinner"></i>
+
+                        In Progress
+
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        style="width: {{ goal['percentage'] }}%;">
+                    </div>
+
+                </div>
+
+
+                <div class="goal-message">
+
+                    {% if goal["status"] == "completed" %}
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    {% elif goal["status"] == "near" %}
+
+                        <i class="fa-solid fa-fire"></i>
+
+                    {% else %}
+
+                        <i class="fa-solid fa-piggy-bank"></i>
+
+                    {% endif %}
+
+                    <span>
+                        {{ goal["status_message"] }}
+                    </span>
+
+                </div>
+
+
+                {% if goal["deadline"] %}
+
+                <div class="goal-info-row">
+
+                    <div class="goal-info-icon">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>Deadline</span>
+
+                        <strong>
+                            {{ goal["deadline"] }}
+                        </strong>
+
+                    </div>
+
+                    <div class="deadline-status">
+
+                        {% if goal["deadline_status"] == "Overdue" %}
+
+                            <span class="deadline-overdue">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                Overdue
+                            </span>
+
+                        {% elif goal["deadline_status"] == "Due Today" %}
+
+                            <span class="deadline-warning">
+                                <i class="fa-solid fa-clock"></i>
+                                Due Today
+                            </span>
+
+                        {% elif goal["deadline_status"] == "Due Soon" %}
+
+                            <span class="deadline-warning">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                                Due Soon
+                            </span>
+
+                        {% else %}
+
+                            <span class="deadline-success">
+                                <i class="fa-solid fa-check"></i>
+                                On Track
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if goal["days_remaining"] is not none %}
+
+                <div class="days-row">
+
+                    {% if goal["days_remaining"] > 0 %}
+
+                        <i class="fa-solid fa-calendar"></i>
+
+                        <span>
+                            {{ goal["days_remaining"] }}
+                            day{% if goal["days_remaining"] != 1 %}s{% endif %}
+                            remaining
+                        </span>
+
+                    {% elif goal["days_remaining"] == 0 %}
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        <span>
+                            Deadline is today
+                        </span>
+
+                    {% else %}
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <span>
+                            Deadline has passed
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                {% endif %}
+
+
+                {% if goal["monthly_target"] > 0 %}
+
+                <div class="monthly-target">
+
+                    <div class="monthly-target-icon">
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Monthly Saving Target
+                        </span>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(goal["monthly_target"]) }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if goal["monthly_status"] %}
+
+                <div class="monthly-status">
+
+                    <i class="fa-solid fa-bullseye"></i>
+
+                    {{ goal["monthly_status"] }}
+
+                </div>
+
+                {% endif %}
+
+
+                {% if goal["status"] != "completed" %}
+
+                <form
+                    action="{{ url_for('add_savings_money', goal_id=goal['goal_id']) }}"
+                    method="POST"
+                    class="add-money-form">
+
+                    <input
+                        type="number"
+                        name="amount"
+                        placeholder="Amount to add"
+                        min="1"
+                        step="0.01"
+                        required
+                    >
+
+                    <button type="submit">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Money
+
+                    </button>
+
+                </form>
+
+
+                {% if goal["current_amount"] > 0 %}
+
+                <form
+                    action="{{ url_for('withdraw_savings', goal_id=goal['goal_id']) }}"
+                    method="POST"
+                    class="withdraw-money-form">
+
+                    <input
+                        type="number"
+                        name="amount"
+                        placeholder="Amount to withdraw"
+                        min="1"
+                        max="{{ goal['current_amount'] }}"
+                        step="0.01"
+                        required
+                    >
+
+                    <button type="submit">
+
+                        <i class="fa-solid fa-minus"></i>
+
+                        Withdraw
+
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+
+                {% else %}
+
+                <div class="completed-message">
+
+                    <i class="fa-solid fa-trophy"></i>
+
+                    <span>
+                        Goal successfully completed!
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-piggy-bank"></i>
+
+            <h3>No Savings Goals</h3>
+
+            <p>
+                Create your first savings goal above.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+<div
+    id="editGoalModal"
+    class="modal"
+    aria-hidden="true">
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-label">
+                    <i class="fa-solid fa-pen"></i>
+                    UPDATE GOAL
+                </span>
+
+                <h2>
+                    Edit Savings Goal
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closeEditGoal()"
+                aria-label="Close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form
+            id="editGoalForm"
+            method="POST">
+
+
+            <div class="form-group">
+
+                <label for="edit_goal_name">
+                    Goal Name
+                </label>
+
+                <input
+                    type="text"
+                    id="edit_goal_name"
+                    name="goal_name"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="edit_target_amount">
+                    Target Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="edit_target_amount"
+                    name="target_amount"
+                    min="1"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="edit_deadline">
+                    Deadline
+                </label>
+
+                <input
+                    type="date"
+                    id="edit_deadline"
+                    name="deadline"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="edit_monthly_target">
+                    Monthly Saving Target
+                </label>
+
+                <input
+                    type="number"
+                    id="edit_monthly_target"
+                    name="monthly_target"
+                    min="0"
+                    step="0.01"
+                >
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeEditGoal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    <i class="fa-solid fa-save"></i>
+
+                    Save Changes
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+<script src="{{ url_for('static', filename='js/savings.js') }}"></script>
+
+</body>
+
+</html>

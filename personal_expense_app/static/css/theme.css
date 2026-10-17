@@ -1,0 +1,721 @@
+/* ==========================================================================
+   Expense Manager - Unified Modern Theme & Design System
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+:root {
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+
+    /* Brand Primary Palette */
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-border: #bfdbfe;
+    --primary-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    --primary-glow: rgba(37, 99, 235, 0.28);
+
+    /* Income / Success */
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-light: #ecfdf5;
+    --success-border: #a7f3d0;
+    --success-gradient: linear-gradient(135deg, #059669 0%, #10b981 60%, #34d399 100%);
+    --success-glow: rgba(16, 185, 129, 0.25);
+
+    /* Expense / Danger */
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-light: #fef2f2;
+    --danger-border: #fecaca;
+    --danger-gradient: linear-gradient(135deg, #dc2626 0%, #ef4444 60%, #f87171 100%);
+    --danger-glow: rgba(239, 68, 68, 0.25);
+
+    /* Warning / Budget Accent */
+    --warning: #f59e0b;
+    --warning-light: #fffbeb;
+    --warning-border: #fde68a;
+    --warning-gradient: linear-gradient(135deg, #d97706 0%, #f59e0b 60%, #fbbf24 100%);
+
+    /* Royal Indigo / Balance */
+    --balance-gradient: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 60%, #38bdf8 100%);
+
+    /* Neutral Surfaces */
+    --bg-page: #f8fafc;
+    --surface-card: #ffffff;
+    --surface-subtle: #f1f5f9;
+    --surface-hover: #f8fafc;
+    --border-card: #e2e8f0;
+    --border-subtle: #f1f5f9;
+
+    /* Text Colors */
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-subtle: #94a3b8;
+    --text-inverse: #ffffff;
+
+    /* Luxury Slate Sidebar */
+    --sidebar-bg: #0b0f19;
+    --sidebar-surface: #111827;
+    --sidebar-border: rgba(255, 255, 255, 0.07);
+    --sidebar-link: #94a3b8;
+    --sidebar-link-hover: #ffffff;
+    --sidebar-active-bg: linear-gradient(135deg, #2563eb, #3b82f6);
+    --sidebar-active-text: #ffffff;
+    --sidebar-active-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+    --sidebar-width: 255px;
+
+    /* Component Geometry */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 22px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04);
+    --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    --shadow-hover: 0 14px 30px -4px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+    --shadow-glow: 0 0 25px rgba(37, 99, 235, 0.18);
+
+    /* Animation */
+    --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    --transition: all 0.25s var(--ease-smooth);
+}
+
+/* ==========================================================================
+   Base & Resets
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+input, button, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* ==========================================================================
+   Unified Sidebar Navigation
+   ========================================================================== */
+.dashboard-nav,
+.analytics-nav,
+.expense-nav,
+.income-nav,
+.transaction-nav,
+.transactions-nav,
+.budget-nav,
+.savings-nav,
+nav.reports-nav,
+nav {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: var(--sidebar-width) !important;
+    height: 100vh !important;
+    background: linear-gradient(180deg, #090d16 0%, #0f172a 100%) !important;
+    border-right: 1px solid var(--sidebar-border) !important;
+    padding: 24px 14px 20px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    z-index: 1000 !important;
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.25) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease !important;
+}
+
+/* Custom Scrollbar for Sidebar */
+.dashboard-nav::-webkit-scrollbar,
+nav::-webkit-scrollbar {
+    width: 4px;
+}
+.dashboard-nav::-webkit-scrollbar-thumb,
+nav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+/* Brand Header */
+.dashboard-nav h2,
+.expense-nav h2,
+.income-nav h2,
+.transaction-nav h2,
+.transactions-nav h2,
+.budget-nav h2,
+.savings-nav h2,
+nav h2 {
+    color: #ffffff !important;
+    font-family: var(--font-heading) !important;
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em !important;
+    padding: 10px 12px 18px 12px !important;
+    margin-bottom: 12px !important;
+    text-align: left !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    border-bottom: 1px solid var(--sidebar-border) !important;
+}
+
+.dashboard-nav h2::before,
+nav h2::before {
+    content: "\f555" !important;
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    width: 34px !important;
+    height: 34px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+    color: white !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+    flex-shrink: 0 !important;
+}
+
+.dashboard-nav h2::after,
+.expense-nav h2::after,
+.income-nav h2::after {
+    display: none !important;
+}
+
+/* Navigation Links */
+.dashboard-nav a,
+.expense-nav a,
+.income-nav a,
+.transaction-nav a,
+.transactions-nav a,
+.budget-nav a,
+.savings-nav a,
+nav a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 11px 14px !important;
+    margin: 2px 0 !important;
+    color: var(--sidebar-link) !important;
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    border-radius: var(--radius-md) !important;
+    transition: var(--transition) !important;
+    text-decoration: none !important;
+    position: relative !important;
+}
+
+.dashboard-nav a i,
+nav a i {
+    width: 20px !important;
+    font-size: 15px !important;
+    text-align: center !important;
+    color: inherit !important;
+    opacity: 0.85 !important;
+    transition: var(--transition) !important;
+}
+
+.dashboard-nav a:hover,
+nav a:hover {
+    color: var(--sidebar-link-hover) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    transform: translateX(4px) !important;
+}
+
+.dashboard-nav a:hover i,
+nav a:hover i {
+    opacity: 1 !important;
+    color: #38bdf8 !important;
+}
+
+.dashboard-nav a.active,
+.expense-nav a.active,
+.income-nav a.active,
+.transaction-nav a.active,
+.transactions-nav a.active,
+.budget-nav a.active,
+.savings-nav a.active,
+nav a.active {
+    background: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-active-text) !important;
+    font-weight: 600 !important;
+    box-shadow: var(--sidebar-active-shadow) !important;
+    transform: none !important;
+}
+
+.dashboard-nav a.active i,
+nav a.active i {
+    opacity: 1 !important;
+    color: #ffffff !important;
+}
+
+/* Sidebar Logout link push to bottom */
+.dashboard-nav a[href*="logout"],
+nav a[href*="logout"] {
+    margin-top: auto !important;
+    border-top: 1px solid var(--sidebar-border) !important;
+    padding-top: 14px !important;
+    color: #f87171 !important;
+}
+
+.dashboard-nav a[href*="logout"]:hover,
+nav a[href*="logout"]:hover {
+    background: rgba(239, 68, 68, 0.12) !important;
+    color: #fca5a5 !important;
+}
+
+/* ==========================================================================
+   Main Content Layouts
+   ========================================================================== */
+/* ==========================================================================
+   Main Content Layouts
+   ========================================================================== */
+.dashboard-main,
+.analytics-main,
+.expense-main,
+.income-main,
+.transaction-main,
+.transactions-main,
+.budget-main,
+.savings-main,
+.reports-container {
+    margin-left: var(--sidebar-width) !important;
+    padding: 36px 40px !important;
+    min-height: 100vh !important;
+    transition: margin-left 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    animation: pageFadeIn 0.5s ease-out !important;
+}
+
+/* ==========================================================================
+   Sidebar Collapsed States (Hide Button Active)
+   ========================================================================== */
+body.sidebar-collapsed .dashboard-nav,
+body.sidebar-collapsed .analytics-nav,
+body.sidebar-collapsed .expense-nav,
+body.sidebar-collapsed .income-nav,
+body.sidebar-collapsed .transaction-nav,
+body.sidebar-collapsed .transactions-nav,
+body.sidebar-collapsed .budget-nav,
+body.sidebar-collapsed .savings-nav,
+body.sidebar-collapsed nav.reports-nav,
+body.sidebar-collapsed nav {
+    transform: translateX(-100%) !important;
+    box-shadow: none !important;
+}
+
+body.sidebar-collapsed .dashboard-main,
+body.sidebar-collapsed .analytics-main,
+body.sidebar-collapsed .expense-main,
+body.sidebar-collapsed .income-main,
+body.sidebar-collapsed .transaction-main,
+body.sidebar-collapsed .transactions-main,
+body.sidebar-collapsed .budget-main,
+body.sidebar-collapsed .savings-main,
+body.sidebar-collapsed .reports-container {
+    margin-left: 0 !important;
+    padding-left: 56px !important;
+    padding-right: 56px !important;
+}
+
+/* Sidebar Header Row */
+.sidebar-header-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-bottom: 1px solid var(--sidebar-border) !important;
+    padding: 0 4px 14px 4px !important;
+    margin-bottom: 12px !important;
+}
+
+.sidebar-header-row h2 {
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    flex: 1 !important;
+}
+
+/* Sidebar Hide/Collapse Button inside header */
+.sidebar-collapse-btn {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-md);
+    color: #94a3b8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    transition: var(--transition);
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.sidebar-collapse-btn:hover {
+    background: rgba(59, 130, 246, 0.25);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.5);
+    transform: scale(1.08);
+}
+
+/* Floating Navigation Toggle Button (Shows when sidebar is hidden) */
+.floating-nav-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: #0f172a;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-full);
+    font-size: 0.86rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+}
+
+.floating-nav-toggle:hover {
+    background: #1e293b;
+    color: #38bdf8;
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.35);
+}
+
+body.sidebar-collapsed .floating-nav-toggle {
+    display: inline-flex !important;
+    animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pageFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Toggle Button */
+.mobile-nav-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1100;
+    width: 42px;
+    height: 42px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: var(--transition);
+}
+
+.mobile-nav-toggle:hover {
+    background: var(--surface-subtle);
+    color: var(--primary);
+}
+
+/* Backdrop for Mobile Nav */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+}
+
+/* ==========================================================================
+   Standard KPI / Stat Cards
+   ========================================================================== */
+.stat-card-base,
+.dashboard-card,
+.summary-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card-base:hover,
+.dashboard-card:hover,
+.summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* ==========================================================================
+   Standard Table Styles
+   ========================================================================== */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
+}
+
+table thead th {
+    background: #f8fafc;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-card);
+    white-space: nowrap;
+}
+
+table thead th:first-child {
+    border-top-left-radius: var(--radius-md);
+}
+
+table thead th:last-child {
+    border-top-right-radius: var(--radius-md);
+}
+
+table tbody td {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+table tbody tr {
+    transition: background 0.15s ease;
+}
+
+table tbody tr:hover {
+    background: rgba(241, 245, 249, 0.6);
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================================================
+   Badges & Pills
+   ========================================================================== */
+.income-badge,
+.type-badge.income-badge,
+.type.income-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: var(--success-light);
+    color: var(--success-hover);
+    border: 1px solid var(--success-border);
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.expense-badge,
+.type-badge.expense-badge,
+.type.expense-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: var(--danger-light);
+    color: var(--danger-hover);
+    border: 1px solid var(--danger-border);
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.category-badge,
+.payment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: var(--surface-subtle);
+    color: var(--text-main);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.income-amount {
+    color: var(--success-hover) !important;
+    font-weight: 700 !important;
+}
+
+.expense-amount {
+    color: var(--danger-hover) !important;
+    font-weight: 700 !important;
+}
+
+/* ==========================================================================
+   Form Controls
+   ========================================================================== */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 11px 16px;
+    background: #ffffff;
+    border: 1.5px solid var(--border-card);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-size: 0.92rem;
+    transition: var(--transition);
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3.5px var(--primary-glow);
+}
+
+/* Buttons */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--primary-gradient);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.92rem;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--primary-glow);
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 992px) {
+    :root {
+        --sidebar-width: 240px;
+    }
+    .dashboard-main,
+    .expense-main,
+    .income-main,
+    .transaction-main,
+    .transactions-main,
+    .budget-main,
+    .savings-main,
+    .reports-container {
+        padding: 24px 20px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-nav-toggle {
+        display: inline-flex;
+    }
+
+    .dashboard-nav,
+    .expense-nav,
+    .income-nav,
+    .transaction-nav,
+    .transactions-nav,
+    .budget-nav,
+    .savings-nav,
+    nav {
+        transform: translateX(-100%);
+        transition: transform 0.3s var(--ease-smooth) !important;
+    }
+
+    .dashboard-nav.show-mobile,
+    nav.show-mobile {
+        transform: translateX(0) !important;
+    }
+
+    .dashboard-main,
+    .expense-main,
+    .income-main,
+    .transaction-main,
+    .transactions-main,
+    .budget-main,
+    .savings-main,
+    .reports-container {
+        margin-left: 0 !important;
+        padding: 70px 16px 30px 16px !important;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+}

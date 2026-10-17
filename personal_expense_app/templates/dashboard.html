@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Manager - Dashboard</title>
+
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Unified Modern Theme & Dashboard CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- Floating Navigation Toggle (Visible when sidebar is hidden) -->
+<button class="floating-nav-toggle" id="floatingNavToggle" aria-label="Open Navigation Menu" title="Open Sidebar (Ctrl+B)">
+    <i class="fa-solid fa-bars"></i>
+    <span>Menu</span>
+</button>
+
+<!-- Navigation Sidebar -->
+<nav class="dashboard-nav">
+
+    <div class="sidebar-header-row">
+        <h2>Expense Manager</h2>
+        <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Hide Sidebar (Ctrl+B)">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="active">
+        <i class="fa-solid fa-house"></i>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="{{ url_for('add_expense') }}">
+        <i class="fa-solid fa-arrow-down"></i>
+        <span>Add Expense</span>
+    </a>
+
+    <a href="{{ url_for('add_income') }}">
+        <i class="fa-solid fa-arrow-up"></i>
+        <span>Add Income</span>
+    </a>
+
+    <a href="{{ url_for('transactions') }}">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Transactions</span>
+    </a>
+
+    <a href="{{ url_for('budget') }}">
+        <i class="fa-solid fa-wallet"></i>
+        <span>Budget</span>
+    </a>
+
+    <a href="{{ url_for('savings') }}">
+        <i class="fa-solid fa-piggy-bank"></i>
+        <span>Savings</span>
+    </a>
+
+    <a href="{{ url_for('analytics') }}">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Analytics</span>
+    </a>
+
+    <a href="{{ url_for('reports') }}">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Reports</span>
+    </a>
+
+    <a href="{{ url_for('logout') }}">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </a>
+
+</nav>
+
+
+<!-- Main Dashboard Container -->
+<main class="dashboard-main">
+
+    <!-- Top Header -->
+    <section class="dashboard-header">
+
+        <div>
+            <h1>Welcome, {{ session.get("name", "User") }} 👋</h1>
+            <p>Here is your financial health and recent spending overview</p>
+        </div>
+
+        <div class="header-actions">
+            <a href="{{ url_for('add_expense') }}" class="quick-btn expense-btn">
+                <i class="fa-solid fa-plus"></i>
+                Add Expense
+            </a>
+            <a href="{{ url_for('add_income') }}" class="quick-btn income-btn">
+                <i class="fa-solid fa-arrow-up"></i>
+                Add Income
+            </a>
+        </div>
+
+    </section>
+
+
+    <!-- KPI Metric Cards -->
+    <section class="dashboard-cards">
+
+        <div class="dashboard-card income-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+            </div>
+            <div class="card-info">
+                <h3>TOTAL INCOME</h3>
+                <p class="card-value">
+                    ₹{{ "%.2f"|format(income) }}
+                </p>
+                <span class="card-subtext">
+                    <i class="fa-solid fa-circle-check"></i> Recorded cash flow
+                </span>
+            </div>
+        </div>
+
+
+        <div class="dashboard-card expense-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-arrow-trend-down"></i>
+            </div>
+            <div class="card-info">
+                <h3>TOTAL EXPENSE</h3>
+                <p class="card-value">
+                    ₹{{ "%.2f"|format(expense) }}
+                </p>
+                <span class="card-subtext">
+                    <i class="fa-solid fa-arrow-down"></i> Total outgoings
+                </span>
+            </div>
+        </div>
+
+
+        <div class="dashboard-card balance-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+            <div class="card-info">
+                <h3>NET BALANCE</h3>
+                <p class="card-value">
+                    ₹{{ "%.2f"|format(balance) }}
+                </p>
+                <span class="card-subtext">
+                    {% if balance >= 0 %}
+                    <i class="fa-solid fa-arrow-trend-up"></i> Positive reserve
+                    {% else %}
+                    <i class="fa-solid fa-triangle-exclamation"></i> Deficit alert
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- Charts Section -->
+    <section class="dashboard-charts">
+
+        <div class="chart-box">
+            <div class="chart-header">
+                <div>
+                    <h2>
+                        <i class="fa-solid fa-chart-column"></i>
+                        Cash Flow Overview
+                    </h2>
+                    <span class="chart-subtitle">Income vs Expense vs Balance breakdown</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="financeChart"></canvas>
+            </div>
+        </div>
+
+
+        <div class="chart-box">
+            <div class="chart-header">
+                <div>
+                    <h2>
+                        <i class="fa-solid fa-chart-pie"></i>
+                        Income vs Expense Ratio
+                    </h2>
+                    <span class="chart-subtitle">Proportional split of your money</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="summaryChart"></canvas>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- Recent Transactions Section -->
+    <section class="transactions-box">
+
+        <div class="transactions-header">
+            <div>
+                <h2>
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    Recent Transactions
+                </h2>
+                <p>Your latest financial entries</p>
+            </div>
+
+            <div class="transactions-header-right">
+                <span class="transaction-count">
+                    {{ transactions|length }} Transactions
+                </span>
+                <a href="{{ url_for('transactions') }}" class="view-all-link">
+                    View All <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Payment Mode</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>
+                            <div class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                <span>{{ transaction["date"] }}</span>
+                            </div>
+                        </td>
+
+                        <td>
+                            {% if transaction["type"] == "Income" %}
+                            <span class="income-badge">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                Income
+                            </span>
+                            {% else %}
+                            <span class="expense-badge">
+                                <i class="fa-solid fa-arrow-down"></i>
+                                Expense
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <span class="category-badge">
+                                <i class="fa-solid fa-tag"></i>
+                                {{ transaction["category"] }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="payment-badge">
+                                <i class="fa-solid fa-credit-card"></i>
+                                {{ transaction["payment_mode"] }}
+                            </span>
+                        </td>
+
+                        <td class="amount">
+                            {% if transaction["type"] == "Income" %}
+                            <span class="income-amount">+₹{{ "%.2f"|format(transaction["amount"]|float) }}</span>
+                            {% else %}
+                            <span class="expense-amount">-₹{{ "%.2f"|format(transaction["amount"]|float) }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="no-transactions">
+                                <i class="fa-solid fa-receipt"></i>
+                                <h3>No Transactions Yet</h3>
+                                <p>Start tracking your expenses and income to see them listed here.</p>
+                                <div class="empty-actions">
+                                    <a href="{{ url_for('add_expense') }}" class="quick-btn expense-btn">
+                                        <i class="fa-solid fa-minus"></i> Add Expense
+                                    </a>
+                                    <a href="{{ url_for('add_income') }}" class="quick-btn income-btn">
+                                        <i class="fa-solid fa-plus"></i> Add Income
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+    const income = Number("{{ income }}");
+    const expense = Number("{{ expense }}");
+    const balance = Number("{{ balance }}");
+</script>
+
+<script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+</html>

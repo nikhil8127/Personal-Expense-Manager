@@ -1,0 +1,399 @@
+/* ==========================================================================
+   Dashboard Page Styles
+   ========================================================================== */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.dashboard-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+}
+
+.dashboard-header p {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quick-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.quick-btn.expense-btn {
+    background: #ffffff;
+    color: var(--danger);
+    border: 1.5px solid var(--danger-border);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);
+}
+
+.quick-btn.expense-btn:hover {
+    background: var(--danger);
+    color: #ffffff;
+    border-color: var(--danger);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--danger-glow);
+}
+
+.quick-btn.income-btn {
+    background: var(--success);
+    color: #ffffff;
+    border: 1.5px solid var(--success);
+    box-shadow: 0 4px 14px var(--success-glow);
+}
+
+.quick-btn.income-btn:hover {
+    background: var(--success-hover);
+    border-color: var(--success-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+}
+
+/* ==========================================================================
+   Hero KPI Cards
+   ========================================================================== */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.dashboard-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 24px 26px;
+    min-height: 145px;
+    border-radius: var(--radius-xl);
+    color: #ffffff;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Subtle background glowing rings */
+.dashboard-card::before {
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    right: -45px;
+    top: -45px;
+    background: rgba(255, 255, 255, 0.12);
+    pointer-events: none;
+}
+
+.dashboard-card::after {
+    content: "";
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    right: 45px;
+    bottom: -45px;
+    background: rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+}
+
+.income-card {
+    background: var(--success-gradient);
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+}
+
+.expense-card {
+    background: var(--danger-gradient);
+    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
+}
+
+.balance-card {
+    background: var(--balance-gradient);
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+}
+
+.card-icon {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius-lg);
+    font-size: 22px;
+    color: #ffffff;
+    backdrop-filter: blur(8px);
+}
+
+.card-info {
+    flex: 1;
+}
+
+.dashboard-card h3 {
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+    margin-bottom: 6px;
+}
+
+.card-value {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.card-subtext {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 0, 0, 0.12);
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   Charts Grid
+   ========================================================================== */
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.chart-box {
+    background: var(--surface-card);
+    padding: 24px;
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+}
+
+.chart-box:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.chart-header {
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.chart-header h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-header h2 i {
+    color: var(--primary);
+    font-size: 1.05rem;
+}
+
+.chart-subtitle {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+}
+
+.chart-container {
+    height: 270px;
+    position: relative;
+    width: 100%;
+}
+
+/* ==========================================================================
+   Recent Transactions Box
+   ========================================================================== */
+.transactions-box {
+    background: var(--surface-card);
+    padding: 26px 28px;
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+}
+
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.transactions-header h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.transactions-header h2 i {
+    color: var(--primary);
+}
+
+.transactions-header p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 2px;
+}
+
+.transactions-header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.transaction-count {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary-border);
+    padding: 5px 13px;
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.view-all-link:hover {
+    color: var(--primary-hover);
+    transform: translateX(3px);
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-card);
+}
+
+.date-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.date-cell i {
+    color: var(--text-subtle);
+}
+
+.amount {
+    font-family: var(--font-heading);
+    font-size: 0.96rem;
+    font-weight: 700;
+}
+
+/* Empty State */
+.no-transactions {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-muted);
+}
+
+.no-transactions i {
+    font-size: 48px;
+    margin-bottom: 14px;
+    color: var(--text-subtle);
+    opacity: 0.6;
+}
+
+.no-transactions h3 {
+    font-size: 1.15rem;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.no-transactions p {
+    font-size: 0.9rem;
+    max-width: 380px;
+    margin: 0 auto 20px auto;
+}
+
+.empty-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 1100px) {
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+    .dashboard-charts {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .card-value {
+        font-size: 1.7rem;
+    }
+}

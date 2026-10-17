@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense - Expense Manager</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Unified Modern Theme & Expense CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_expense.css') }}">
+</head>
+
+<body>
+
+<!-- Floating Navigation Toggle (Visible when sidebar is hidden) -->
+<button class="floating-nav-toggle" id="floatingNavToggle" aria-label="Open Navigation Menu" title="Open Sidebar (Ctrl+B)">
+    <i class="fa-solid fa-bars"></i>
+    <span>Menu</span>
+</button>
+
+<!-- Navigation Sidebar -->
+<nav class="expense-nav">
+
+    <div class="sidebar-header-row">
+        <h2>Expense Manager</h2>
+        <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Hide Sidebar (Ctrl+B)">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}">
+        <i class="fa-solid fa-house"></i>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="{{ url_for('add_expense') }}" class="active">
+        <i class="fa-solid fa-arrow-down"></i>
+        <span>Add Expense</span>
+    </a>
+
+    <a href="{{ url_for('add_income') }}">
+        <i class="fa-solid fa-arrow-up"></i>
+        <span>Add Income</span>
+    </a>
+
+    <a href="{{ url_for('transactions') }}">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Transactions</span>
+    </a>
+
+    <a href="{{ url_for('budget') }}">
+        <i class="fa-solid fa-wallet"></i>
+        <span>Budget</span>
+    </a>
+
+    <a href="{{ url_for('savings') }}">
+        <i class="fa-solid fa-piggy-bank"></i>
+        <span>Savings</span>
+    </a>
+
+    <a href="{{ url_for('analytics') }}">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Analytics</span>
+    </a>
+
+    <a href="{{ url_for('reports') }}">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Reports</span>
+    </a>
+
+    <a href="{{ url_for('logout') }}">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </a>
+
+</nav>
+
+
+<!-- Main Container -->
+<main class="expense-main">
+
+    <!-- Heading -->
+    <section class="expense-heading">
+        <div>
+            <span class="heading-pill">
+                <i class="fa-solid fa-arrow-trend-down"></i>
+                NEW EXPENDITURE
+            </span>
+            <h1>Add Expense</h1>
+            <p>Record your spending to keep your budget on track.</p>
+        </div>
+
+        <div class="expense-heading-icon">
+            <i class="fa-solid fa-receipt"></i>
+        </div>
+    </section>
+
+
+    <!-- Form Layout -->
+    <section class="expense-layout">
+
+        <!-- Left Info / Insights Card -->
+        <div class="expense-info">
+            <div class="info-badge">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Smart Budgeting</span>
+            </div>
+
+            <h2>Track Your Spending</h2>
+            <p>
+                Every transaction you log helps build clearer insights into your financial health, category distributions, and monthly limits.
+            </p>
+
+            <div class="expense-feature">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <section>
+                    <h3>Instant Visual Breakdown</h3>
+                    <p>Categorized spending is instantly visible in charts.</p>
+                </section>
+            </div>
+
+            <div class="expense-feature">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-bullseye"></i>
+                </div>
+                <section>
+                    <h3>Real-time Budget Alerts</h3>
+                    <p>Stay within category thresholds and prevent overspending.</p>
+                </section>
+            </div>
+
+            <div class="expense-feature">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <section>
+                    <h3>Encrypted & Private</h3>
+                    <p>All your transactions are strictly private to your account.</p>
+                </section>
+            </div>
+        </div>
+
+
+        <!-- Right Form Card -->
+        <div class="expense-form-card">
+
+            <div class="form-title">
+                <div class="form-title-icon">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                </div>
+                <div>
+                    <h2>Expense Details</h2>
+                    <p>Fill out the fields below to record this purchase</p>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('add_expense') }}" id="expenseForm">
+
+                <!-- Date -->
+                <div class="form-group">
+                    <label for="date">
+                        <i class="fa-regular fa-calendar"></i>
+                        Date of Expense
+                    </label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                </div>
+
+                <!-- Amount -->
+                <div class="form-group">
+                    <label for="amount">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                        Amount (INR)
+                    </label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            placeholder="0.00"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+                    <!-- Quick Amount Chips -->
+                    <div class="quick-amount-chips">
+                        <span class="chip-label">Quick:</span>
+                        <button type="button" class="amount-chip" data-amount="100">+₹100</button>
+                        <button type="button" class="amount-chip" data-amount="500">+₹500</button>
+                        <button type="button" class="amount-chip" data-amount="1000">+₹1,000</button>
+                        <button type="button" class="amount-chip" data-amount="2000">+₹2,000</button>
+                    </div>
+
+                    <div class="amount-preview" id="amountPreview">
+                        ₹0.00
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category">
+                        <i class="fa-solid fa-tags"></i>
+                        Category
+                    </label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-list"></i>
+                        <select id="category" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Food">🍔 Food & Dining</option>
+                            <option value="Transport">🚗 Transportation</option>
+                            <option value="Shopping">🛍️ Shopping</option>
+                            <option value="Bills">💡 Bills & Utilities</option>
+                            <option value="Education">📚 Education</option>
+                            <option value="Entertainment">🎬 Entertainment</option>
+                            <option value="Health">💊 Healthcare</option>
+                            <option value="Travel">✈️ Travel</option>
+                            <option value="Other">📦 Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Payment Mode -->
+                <div class="form-group">
+                    <label for="payment_mode">
+                        <i class="fa-solid fa-credit-card"></i>
+                        Payment Method
+                    </label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-wallet"></i>
+                        <select id="payment_mode" name="payment_mode" required>
+                            <option value="">Select Payment Method</option>
+                            <option value="UPI">📱 UPI (Google Pay, PhonePe, Paytm)</option>
+                            <option value="Cash">💵 Cash</option>
+                            <option value="Debit Card">💳 Debit Card</option>
+                            <option value="Credit Card">💳 Credit Card</option>
+                            <option value="Net Banking">🏦 Net Banking</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">
+                        <i class="fa-solid fa-align-left"></i>
+                        Description / Note (Optional)
+                    </label>
+                    <div class="input-box textarea-box">
+                        <i class="fa-solid fa-pen"></i>
+                        <textarea
+                            id="description"
+                            name="description"
+                            placeholder="e.g. Grocery store, dinner with friends, uber ride..."
+                            rows="3"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="expense-submit">
+                    <span>
+                        <i class="fa-solid fa-plus"></i>
+                        Confirm & Add Expense
+                    </span>
+                    <i class="fa-solid fa-arrow-right button-arrow"></i>
+                </button>
+
+                <div class="form-security">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Your financial records are strictly private and encrypted.</span>
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+<script src="{{ url_for('static', filename='js/add_expense.js') }}"></script>
+
+</body>
+</html>
